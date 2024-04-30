@@ -1,0 +1,99 @@
+Ce fichier contient les commandes utilisées pour répondre aux questions du TP,
+ainsi que les réponses aux questions.
+1. curl -O https://serpaggi-cours.pages.emse.fr/bigdata-shell/data/20200423-062902-metrics-daily.csv.gz
+
+2. ls -lh
+   Size: 8.1MB (8436764)
+
+3. gunzip 20200423-062902-metrics-daily.csv.gz
+
+4. 98MB
+
+5. file 20200423-062902-metrics-daily.csv
+   CSV text
+
+6. wc 20200423-062902-metrics-daily.csv
+   1037788 lines
+
+   New lines: 1037788. Words: 1037788. Chars: 102429832. Each character takes 1 byte, so we convert
+   this to Megabytes and we obtain 98M.
+
+7. Les données sont organisées en colonnes, séparées par des virgules.
+   Les colonnes sont les suivantes: name,time,HMDT,LUMI,TEMP,id,location,type
+
+8. grep Mobile 20200423-062902-metrics-daily.csv | wc -l
+   834
+
+9. cut -d, -f6 20200423-062902-metrics-daily.csv | sort | uniq
+   03f5ca58-aa70-47b3-980c-c8f486cac9ee
+   140ade6c-4418-4d86-a14e-25b7db5ae83b
+   24a89ddc-23c8-4d9f-9f5e-cff4eba32fb5
+   28bb16da-5d54-4882-9c2b-70c746586185
+   3bfad906-c282-4bf3-9227-cd28259d6b9d
+   6bd134b6-339c-4168-9aeb-ae7d0f236851
+   70345659-3f50-49af-98e7-bbc93961df92
+   757e0b46-0efe-4f36-bf2c-e8008e49d950
+   7b051d3a-8547-463d-9d28-a2d50c5098b4
+   88cb0522-478a-456c-b63b-9c402b5e03b2
+   8a3f92cf-aebf-43b5-9c9e-7f1862584a6c
+   8aa60f58-fc6f-49e2-a53a-f5cc96bb9021
+   8c1a3d81-82bc-40d7-9b77-1b2e5abe151c
+   eefcdb28-7887-469a-a395-7b866cac3a81
+   f9538ac8-4fdb-4049-9ff6-ac4855e3bcc5
+
+10. grep Mobile 20200423-062902-metrics-daily.csv | cut -d, -f6 | sort | uniq | wc -l
+    3bfad906-c282-4bf3-9227-cd28259d6b9d
+    8a3f92cf-aebf-43b5-9c9e-7f1862584a6c
+    8c1a3d81-82bc-40d7-9b77-1b2e5abe151c
+    eefcdb28-7887-469a-a395-7b866cac3a81
+
+11. The time is in nanoseconds: if we take the first timestamp and divide it by 10^9 and feed it to
+    the date command, we obtain: mer. 22 avril 2020 06:29:05 CEST.
+
+12. for d in $(sed -n '2p;$p' 20200423-062902-metrics-daily.csv |
+    cut -d, -f2 |
+    awk '{ printf "%d\n", $0/1000000000 }'); do date -d@"$d"; done
+    Wed Apr 22 06:29:05 CEST 2020
+    Thu Apr 23 06:29:05 CEST 2020
+    
+13. 1) grep Mobile 20200423-062902-metrics-daily.csv > mobiles.csv
+    2) grep -v Mobile 20200423-062902-metrics-daily.csv > fixes.csv
+    3) for i in $(cut -d , -f 7 20200423-062902-metrics-daily.csv | sort | uniq | rev | cut -d '/' -f 1 | rev); do grep i 20200423-062902-metrics-daily.csv | cut -d , -f 2-7 > "$i.csv" ; done
+
+14. (s.sh)
+    ----------------
+    HMDT
+    03f5ca58-aa70-47b3-980c-c8f486cac9ee
+    140ade6c-4418-4d86-a14e-25b7db5ae83b
+    24a89ddc-23c8-4d9f-9f5e-cff4eba32fb5
+    28bb16da-5d54-4882-9c2b-70c746586185
+    3bfad906-c282-4bf3-9227-cd28259d6b9d
+    6bd134b6-339c-4168-9aeb-ae7d0f236851
+    70345659-3f50-49af-98e7-bbc93961df92
+    757e0b46-0efe-4f36-bf2c-e8008e49d950
+    7b051d3a-8547-463d-9d28-a2d50c5098b4
+    88cb0522-478a-456c-b63b-9c402b5e03b2
+    8a3f92cf-aebf-43b5-9c9e-7f1862584a6c
+    8aa60f58-fc6f-49e2-a53a-f5cc96bb9021
+    8c1a3d81-82bc-40d7-9b77-1b2e5abe151c
+    eefcdb28-7887-469a-a395-7b866cac3a81
+    f9538ac8-4fdb-4049-9ff6-ac4855e3bcc5
+    ----------------
+    LUMI
+    03f5ca58-aa70-47b3-980c-c8f486cac9ee
+    140ade6c-4418-4d86-a14e-25b7db5ae83b
+    24a89ddc-23c8-4d9f-9f5e-cff4eba32fb5
+    28bb16da-5d54-4882-9c2b-70c746586185
+    3bfad906-c282-4bf3-9227-cd28259d6b9d
+    70345659-3f50-49af-98e7-bbc93961df92
+    757e0b46-0efe-4f36-bf2c-e8008e49d950
+    88cb0522-478a-456c-b63b-9c402b5e03b2
+    8a3f92cf-aebf-43b5-9c9e-7f1862584a6c
+    8c1a3d81-82bc-40d7-9b77-1b2e5abe151c
+    eefcdb28-7887-469a-a395-7b866cac3a81
+    f9538ac8-4fdb-4049-9ff6-ac4855e3bcc5
+    ----------------
+
+15. On peut utiliser la commande awk pour filtrer les lignes correspondant à un jour donné et les
+    rediriger vers un fichier. On peut ensuite boucler sur les jours de relevé pour obtenir un fichier
+    par jour.
