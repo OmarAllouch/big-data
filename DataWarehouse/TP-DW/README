@@ -1,0 +1,55 @@
+# Data Warehouse - Business Intelligence
+# Superstore Dashboard
+
+> Presented by: Omar ALLOUCH & Charaf Eddine EL KIHAL
+
+## Data sources
+Orders and Returns files are from [Kaggle](https://www.kaggle.com/datasets/shekpaul/global-superstore) (I removed People data)
+
+Cities data from [here](https://simplemaps.com/data/us-cities).
+
+## Question to answer (Problématique)
+How is the store performing overall? And how can we increase sales and reduce returns by analyzing the data?
+
+### Examples of needed metrics
+- General metrics (total sales, total returns, total orders, total customers)
+- Highest category and subcategory of sales
+- Cities with the best order to return ratio
+- Profit and sales trends
+
+## Steps
+1. **Searching for data:** The goal was to find a simple dataset so we could focus on the BI part. At first we couldn't find something that fits our need, the data was either too complicated, or too simple (a single csv file with no opportunity to extend). Then finally we found the Kaggle dataset. After that, we searched for a dataset with cities and their coordinates as an extension to the Superstore dataset, and mainly to show the data on a map.
+
+2. **Data cleaning:** The data was already clean in terms of the content itself, but we had to change the schema to make it conform to the star schema. We did that in the ETL process.
+
+3. **ETL:** We used Python and Pandas to clean and transform the data. We created a script that reads the CSV files, cleans them, and saves them as CSV files in the `output` folder. The details of the schema are in the `images/etoile.png` file, and the script can be found in `scripts/etl.py`. The script also combines the data in a single CSV file to import it to SuperSet (`output/combined_data.csv`).
+
+4. **SuperSet:** We launched a SuperSet instance and imported our data and started our analysis.
+
+## Dashboard (Analysis / Why these graphs?)
+### Map
+The goal was to show the number of orders in each city to quickly determine where the store is performing well and where it isn't, however it seems that Mapbox needs an API token to work, I got one and it still didn't work.
+
+### Big numbers (Total profit & Total units sold)
+Self-explanatory.
+
+### Sales and profit evolution over time
+To see the trends of sales and profit over time. Having both on the same graph can help us determine if the profit is increasing because of the sales or because of the prices. It could also help us eye the seasonality of the sales.
+
+### Cities with good acceptable sales and profit
+To see the cities where the store is performing well, this could help us do one of two things:
+1. Go bigger in these cities by opening more stores or increasing the marketing budget.
+2. Try to understand why the store is performing well in these cities and try to apply the same strategy in other cities.
+
+### Sales by sub-categories
+Similar to the cities with good sales, this could help us understand which categories are performing well and which aren't, and guide us in our marketing strategy and R&D efforts.
+
+_The 2 next graphs are to test hypothesis. They could be removed if they don't provide any value._
+### Sales and returned orders
+An attempt to prove if a relationship between sales and returns exists. If it does, we could try to reduce the returns by improving the quality of the products.
+
+### Returned vs Ship mode
+Similarly, we could try to understand if the ship mode has an impact on the returns.
+
+## Conclusion
+The dashboard is as simple as they come, but it provides a good overview of the store's performance. It could be improved by adding more data and more complex metrics.
